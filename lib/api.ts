@@ -22,13 +22,17 @@ const api = axios.create({
 export const fetchNotes = async (
   search?: string,
   page = 1,
-  perPage?: number
+  perPage?: number,
+  tag?: string
 ): Promise<FetchNotesResponse> => {
   try {
     const params: Record<string, string | number> = { page };
     if (perPage) params.perPage = perPage;
     if (search && search.trim() !== "") {
       params.search = search;
+    }
+    if (tag) {
+      params.tag = tag;
     }
 
     const response = await api.get<FetchNotesResponse>("/notes", { params });
@@ -71,4 +75,16 @@ export const getSingleNote = async (id: string): Promise<Note> => {
     alert("Do not splurge on the note.");
     throw error;
   }
+};
+export type Category = {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export const getCategories = async () => {
+  const res = await axios<Category[]>("/categories");
+  return res.data;
 };

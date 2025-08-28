@@ -9,7 +9,7 @@ import { fetchNotes, FetchNotesResponse } from "@/lib/api";
 import Pagination from "../Pagination/Pagination";
 import Loader from "../Loader/Loader";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
-import Modal from "../Modal/Modal";
+import Modal from "../...Modal/Modal";
 import { useDebounce } from "use-debounce";
 import NoteForm from "../NoteForm/NoteForm";
 
