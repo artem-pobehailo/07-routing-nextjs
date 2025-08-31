@@ -1,40 +1,34 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
-import { getSingleNote } from "@/lib/api";
-import { Note } from "@/types/note";
-import Modal from "@/components/Modal/Modal";
-import css from "./NotePreview.module.css";
-import Loader from "@/components/Loader/Loader";
-import ErrorMessage from "@/components/ErrorMessage/ErrorMessage";
 import { useQuery } from "@tanstack/react-query";
-interface NotePreviewProps {
-  id: string;
-  onClose?: () => void;
-}
+import Modal from "@/components/Modal/Modal";
+import { getSingleNote } from "@/lib/api";
+import { useParams, useRouter } from "next/navigation";
+import css from "./NotePreview.module.css";
 
-export default function NotePreview({ id }: NotePreviewProps) {
+export default function NotePreviewClient() {
+  const { id } = useParams<{ id: string }>();
   const router = useRouter();
-
-  const { data, isLoading, isError } = useQuery<Note, Error>({
-    queryKey: ["note", id],
-    queryFn: () => getSingleNote(id),
-  });
 
   const handleClose = () => {
     router.back();
   };
 
-  if (isLoading) return <Loader />;
-  if (isError || !data) return <ErrorMessage />;
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["note", id],
+    queryFn: () => getSingleNote(id),
+    refetchOnMount: false,
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError || !data) return <div>Error loading note.</div>;
 
   return (
     <Modal onClose={handleClose}>
+      <button onClick={handleClose} className={css.backBtn}>
+        ← Back
+      </button>
       <div className={css.container}>
-        <button className={css.backBtn} onClick={handleClose}>
-          Close
-        </button>
         <div className={css.item}>
           <div className={css.header}>
             <h2>{data.title}</h2>
