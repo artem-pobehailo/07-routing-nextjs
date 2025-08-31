@@ -14,7 +14,7 @@ interface NotePreviewPageProps {
 export default async function NotePreviewPage({
   params,
 }: NotePreviewPageProps) {
-  const { id } = params;
+  const { id } = params as { id: string };
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
