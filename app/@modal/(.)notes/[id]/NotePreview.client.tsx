@@ -1,37 +1,33 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+
 import { getSingleNote } from "@/lib/api";
 import { Note } from "@/types/note";
 import Modal from "@/components/Modal/Modal";
 import css from "./NotePreview.module.css";
 import Loader from "@/components/Loader/Loader";
 import ErrorMessage from "@/components/ErrorMessage/ErrorMessage";
+import { useQuery } from "@tanstack/react-query";
 interface NotePreviewProps {
   id: string;
   onClose?: () => void;
 }
 
-export default function NotePreview({ id, onClose }: NotePreviewProps) {
+export default function NotePreview({ id }: NotePreviewProps) {
   const router = useRouter();
-  const [note, setNote] = useState<Note | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    setIsLoading(true);
-    getSingleNote(id)
-      .then((data) => setNote(data))
-      .catch(() => setNote(null))
-      .finally(() => setIsLoading(false));
-  }, [id]);
+  const { data, isLoading, isError } = useQuery<Note, Error>({
+    queryKey: ["note", id],
+    queryFn: () => getSingleNote(id),
+  });
 
   const handleClose = () => {
     router.back();
   };
 
   if (isLoading) return <Loader />;
-  if (!note) return <ErrorMessage />;
+  if (isError || !data) return <ErrorMessage />;
 
   return (
     <Modal onClose={handleClose}>
@@ -41,10 +37,10 @@ export default function NotePreview({ id, onClose }: NotePreviewProps) {
         </button>
         <div className={css.item}>
           <div className={css.header}>
-            <h2>{note.title}</h2>
+            <h2>{data.title}</h2>
           </div>
-          <p className={css.content}>{note.content}</p>
-          {note.tag && <span className={css.tag}>{note.tag}</span>}
+          <p className={css.content}>{data.content}</p>
+          {data.tag && <span className={css.tag}>{data.tag}</span>}
         </div>
       </div>
     </Modal>
