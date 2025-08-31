@@ -3,17 +3,19 @@
 import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
-
+import "./globals.css";
 export default function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+  modal,
+}: Readonly<{ children: React.ReactNode; modal: React.ReactNode }>) {
   return (
     <html lang="en">
       <body>
         <TanStackProvider>
           <Header />
 
-          <main>{children}</main>
+          {children}
+          {modal}
 
           <Footer />
         </TanStackProvider>

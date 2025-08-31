@@ -6,12 +6,14 @@ import { getSingleNote } from "@/lib/api";
 import { Note } from "@/types/note";
 import Modal from "@/components/Modal/Modal";
 import css from "./NotePreview.module.css";
-interface Props {
-  params: { id: string };
+import Loader from "@/components/Loader/Loader";
+import ErrorMessage from "@/components/ErrorMessage/ErrorMessage";
+interface NotePreviewProps {
+  id: string;
+  onClose?: () => void;
 }
 
-export default function NotePreview({ params }: Props) {
-  const { id } = params;
+export default function NotePreview({ id, onClose }: NotePreviewProps) {
   const router = useRouter();
   const [note, setNote] = useState<Note | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -28,8 +30,8 @@ export default function NotePreview({ params }: Props) {
     router.back();
   };
 
-  if (isLoading) return null;
-  if (!note) return <p>Note not found</p>;
+  if (isLoading) return <Loader />;
+  if (!note) return <ErrorMessage />;
 
   return (
     <Modal onClose={handleClose}>
