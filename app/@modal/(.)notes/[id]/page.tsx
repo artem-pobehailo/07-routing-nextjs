@@ -8,13 +8,13 @@ import NotePreview from "./NotePreview.client";
 import { getSingleNote } from "@/lib/api";
 
 interface NotePreviewPageProps {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }
 
 export default async function NotePreviewPage({
   params,
 }: NotePreviewPageProps) {
-  const { id } = await params;
+  const { id } = params;
 
   const queryClient = new QueryClient();
 
