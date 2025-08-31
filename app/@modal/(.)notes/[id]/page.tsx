@@ -7,11 +7,13 @@ import NotePreview from "./NotePreview.client";
 
 import { getSingleNote } from "@/lib/api";
 
-interface Props {
+interface NotePreviewPageProps {
   params: { id: string };
 }
 
-export default async function NotePreviewPage({ params }: Props) {
+export default async function NotePreviewPage({
+  params,
+}: NotePreviewPageProps) {
   const { id } = params;
   const queryClient = new QueryClient();
 
