@@ -77,8 +77,6 @@ export const getSingleNote = async (id: string): Promise<Note> => {
   }
 };
 
-
-
 export const fetchTags = async (): Promise<string[]> => {
   try {
     const response = await api.get("/notes", {
