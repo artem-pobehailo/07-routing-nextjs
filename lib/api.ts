@@ -80,7 +80,6 @@ export const getSingleNote = async (id: string): Promise<Note> => {
 export const fetchTags = async (): Promise<string[]> => {
   try {
     const response = await api.get("/notes", {
-      headers: { Authorization: `Bearer ${token}` },
       params: { page: 1, perPage: 15 },
     });
 
