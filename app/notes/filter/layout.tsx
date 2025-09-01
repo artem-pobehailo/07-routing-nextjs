@@ -1,3 +1,4 @@
+import DefaultSidebar from "./@sidebar/default";
 import css from "./LayoutNotes.module.css";
 
 export default async function LayoutNotes({
@@ -9,7 +10,7 @@ export default async function LayoutNotes({
 }) {
   return (
     <div className={css.container}>
-      <aside className={css.sidebar}>{sidebar}</aside>
+      <aside className={css.sidebar}>{sidebar ?? <DefaultSidebar />}</aside>
       <main className={css.notesWrapper}>{children}</main>
     </div>
   );
