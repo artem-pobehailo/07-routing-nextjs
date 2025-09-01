@@ -1,6 +1,6 @@
 import { fetchTags } from "@/lib/api";
 
-import SidebarNotes from "./@sidebar/page";
+import SidebarNotes from "./@sidebar/SidebarNotes";
 import css from "./LayoutNotes.module.css";
 
 export default async function LayoutNotes({
