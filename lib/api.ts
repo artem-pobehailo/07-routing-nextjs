@@ -79,7 +79,9 @@ export const getSingleNote = async (id: string): Promise<Note> => {
 
 export const fetchTags = async (): Promise<string[]> => {
   try {
-    const response = await api.get("/notes");
+    const response = await api.get("/notes", {
+      params: { page: 1, perPage: 50 },
+    });
 
     const notes = response.data.notes;
     const tagsSet = new Set<string>();
