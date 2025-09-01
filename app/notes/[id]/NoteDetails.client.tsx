@@ -4,37 +4,33 @@ import css from "./NoteDetails.module.css";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { getSingleNote } from "@/lib/api";
+import { useRouter } from "next/router";
 
 export default function NoteDetailsClient() {
-  const params = useParams();
-  const id = params?.id;
+  const { id } = useParams<{ id: string }>();
+  const router = useRouter();
 
-  const {
-    data: note,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ["note", id],
-    queryFn: () => getSingleNote(String(id)),
-    enabled: !!id,
+    queryFn: () => getSingleNote(id),
     refetchOnMount: false,
   });
 
-  if (isLoading) return <p>Loading, please wait...</p>;
-  if (isError || !note) return <p>Something went wrong.</p>;
+  if (isLoading) return <div>Loading...</div>;
+  if (isError || !data) return <div>Error loading note.</div>;
 
-  const formattedDate = note.updatedAt
-    ? `Updated at: ${new Date(note.updatedAt).toLocaleDateString()}`
-    : `Created at: ${new Date(note.createdAt).toLocaleDateString()}`;
+  const formattedDate = data.updatedAt
+    ? `Updated at: ${new Date(data.updatedAt).toLocaleDateString()}`
+    : `Created at: ${new Date(data.createdAt).toLocaleDateString()}`;
 
   return (
     <div className={css.container}>
       <div className={css.item}>
         <div className={css.header}>
-          <h2>{note.title}</h2>
+          <h2>{data.title}</h2>
         </div>
-        <p className={css.content}>{note.content}</p>
-        {note.tag && <p className={css.tag}>Tag: {note.tag}</p>}
+        <p className={css.content}>{data.content}</p>
+        {data.tag && <p className={css.tag}>Tag: {data.tag}</p>}
         <p className={css.date}>{formattedDate}</p>
       </div>
     </div>

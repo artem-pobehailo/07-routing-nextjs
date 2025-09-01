@@ -7,7 +7,9 @@ import {
 import NoteDetailsClient from "./NoteDetails.client";
 import { getSingleNote } from "@/lib/api";
 
-type NoteDetailsPageProps = { params: { id: string } };
+interface NoteDetailsPageProps {
+  params: Promise<{ id: string }>;
+}
 
 export default async function NoteDetails({ params }: NoteDetailsPageProps) {
   const { id } = await params;
