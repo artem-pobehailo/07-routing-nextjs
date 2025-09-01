@@ -80,7 +80,7 @@ export const getSingleNote = async (id: string): Promise<Note> => {
 export const fetchTags = async (): Promise<string[]> => {
   try {
     const response = await api.get("/notes", {
-      params: { page: 1, perPage: 15 },
+      params: { page: 1, perPage: 20 },
     });
 
     const notes = response.data.notes;
